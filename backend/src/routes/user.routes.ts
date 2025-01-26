@@ -4,6 +4,11 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, sign, verify } from "hono/jwt";
 import { authMiddleware } from "../middlewares/authMiddleware.middleware";
 import bcrypt from "bcryptjs";
+import {
+  signInInput,
+  signUpInput,
+  userUpdateInput,
+} from "@shreyashchandra/medium-blog-common";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -19,6 +24,11 @@ userRouter.post("/signup", async (c) => {
 
   try {
     const body = await c.req.json();
+    const { success } = signUpInput.safeParse(body);
+
+    if (!success) {
+      return c.json({ error: "Invalid input" }, 411);
+    }
     const hashedPassword = await bcrypt.hash(body.password, 10); // Hash the password
     const createdUser = await prisma.user.create({
       data: {
@@ -47,6 +57,10 @@ userRouter.post("/signin", async (c) => {
 
   try {
     const body = await c.req.json();
+    const { success } = signInInput.safeParse(body);
+    if (!success) {
+      return c.json({ error: "Invalid input" }, 411);
+    }
     const user = await prisma.user.findUnique({ where: { email: body.email } });
 
     if (!user) return c.json({ error: "User not found" }, 404);
@@ -84,6 +98,10 @@ userRouter.put("/update", authMiddleware, async (c) => {
     }
 
     const body = await c.req.json();
+    const { success } = userUpdateInput.safeParse(body);
+    if (!success) {
+      return c.json({ error: "Invalid input" }, 411);
+    }
 
     // Find the user using the email from the token
     const user = await prisma.user.findUnique({ where: { email: userEmail } });

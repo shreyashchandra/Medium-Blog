@@ -1,6 +1,10 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
+import {
+  createPostInput,
+  updatePostInput,
+} from "@shreyashchandra/medium-blog-common";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -16,6 +20,10 @@ blogRouter.post("/", async (c) => {
     }).$extends(withAccelerate());
 
     const body = await c.req.json();
+    const { success } = createPostInput.safeParse(body);
+    if (!success) {
+      return c.json({ error: "Invalid input" }, 400);
+    }
 
     // Extract user id from the token
     const userId = c.req.user?.id;
@@ -48,6 +56,10 @@ blogRouter.put("/", async (c) => {
     }).$extends(withAccelerate());
 
     const body = await c.req.json();
+    const { success } = updatePostInput.safeParse(body);
+    if (!success) {
+      return c.json({ error: "Invalid input" }, 400);
+    }
 
     const findBlog = await prisma.post.findUnique({
       where: {
