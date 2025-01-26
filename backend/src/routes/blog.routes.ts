@@ -105,9 +105,9 @@ blogRouter.get("/", async (c) => {
   }
 });
 
+// TODO: Add pagination
 blogRouter.get("/bulk", async (c) => {
   try {
-    console.log("hi");
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
@@ -132,6 +132,7 @@ blogRouter.get("/bulk", async (c) => {
   }
 });
 
+// TODO: Add pagination
 blogRouter.get("/all", async (c) => {
   try {
     const prisma = new PrismaClient({
