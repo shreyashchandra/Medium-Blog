@@ -141,11 +141,101 @@ app.put("/api/v1/user/update", authMiddleware, async (c) => {
   }
 });
 
-app.post("/api/v1/blog", (c) => c.text("Post blog route"));
-app.put("/api/v1/blog", (c) => c.text("Update blog route"));
-app.get("/api/v1/blog/:id", (c) =>
-  c.text(`Get blog with ID: ${c.req.param("id")}`)
-);
+app.post("/api/v1/blog", async (c) => {
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const body = await c.req.json();
+
+    // Extract user id from the token
+    const userId = c.req.user?.id;
+
+    const createdPost = await prisma.post.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        author: {
+          connect: { id: userId },
+        },
+      },
+    });
+
+    if (!createdPost) {
+      return c.json({ error: "Failed to create blog" }, 500);
+    }
+
+    return c.json(createdPost, 201);
+  } catch (error) {
+    console.error("Error creating blog:", error);
+    return c.json({ error: "Failed to create blog" }, 500);
+  }
+});
+
+app.put("/api/v1/blog", async (c) => {
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const body = await c.req.json();
+
+    const findBlog = await prisma.post.findUnique({
+      where: {
+        id: body.id,
+      },
+    });
+
+    if (!findBlog) {
+      return c.json({ error: "Blog not found" }, 404);
+    }
+
+    const updateBlog = await prisma.post.update({
+      where: { id: body.id },
+      data: {
+        title: body.title,
+        content: body.content,
+        published: body.published || true,
+      },
+    });
+
+    if (!updateBlog) {
+      return c.json({ error: "Failed to update blog" }, 500);
+    }
+
+    return c.json(updateBlog, 201);
+  } catch (error) {
+    console.error("Error creating blog:", error);
+    return c.json({ error: "Failed to update blog" }, 500);
+  }
+});
+
+app.get("/api/v1/blog/:id", async (c) => {
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const id = c.req.param("id");
+
+    const findBlog = await prisma.post.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!findBlog) {
+      return c.json({ error: "Blog not found" }, 404);
+    }
+
+    return c.json(findBlog, 201);
+  } catch (error) {
+    console.error("Error creating blog:", error);
+    return c.json({ error: "Failed to get blog" }, 500);
+  }
+});
+
 app.get("/api/v1/blog/bulk", (c) => c.text("Get all blogs route"));
 
 export default app;
