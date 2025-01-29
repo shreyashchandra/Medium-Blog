@@ -4,9 +4,9 @@ const Signup = () => {
   return (
     <>
       <div>
-        <div className="flex flex-col md:grid md:grid-cols-2 ">
+        <div className="flex flex-col md:grid md:grid-cols-2  ">
           <div>
-            <Auth />
+            <Auth type={"signup"} />
           </div>
           <Quote />
         </div>
