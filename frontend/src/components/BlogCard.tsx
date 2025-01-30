@@ -49,7 +49,9 @@ export default function BlogCard({ blog }: { blog: Blog }) {
                 Side Hustle
               </span>
               <span className="text-gray-500">·</span>
-              <span className="text-gray-500">3 min read</span>
+              <span className="text-gray-500">
+                {Math.ceil(blog.content.length / 100)} min read
+              </span>
             </div>
 
             {/* Action Buttons */}
