@@ -1,11 +1,29 @@
 import logo from "../assets/logo.jpg"; // Ensure correct path
 import { Link } from "react-router-dom";
+import { userDetailsFun as fetchUserDetails } from "../utils/api.utils";
+import { useEffect, useState } from "react";
 
 function AppBar() {
   const handleLogout = () => {
     localStorage.removeItem("token"); // Remove token
     window.location.reload(); // Reload the page
   };
+
+  const [user, setUser] = useState("");
+
+  const fetchUserDetailsLocal = async (token: string) => {
+    const res = await fetchUserDetails(token);
+    if (res) {
+      console.log(res.name);
+      setUser(res.name);
+    }
+  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchUserDetailsLocal(token);
+    }
+  }, []);
 
   return (
     <div className="flex justify-between  items-center">
@@ -22,7 +40,7 @@ function AppBar() {
 
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-white bg-black">
-            U
+            {user?.charAt(0)}
           </div>
 
           <button

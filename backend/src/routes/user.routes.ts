@@ -126,3 +126,21 @@ userRouter.put("/update", authMiddleware, async (c) => {
     return c.json({ error: "Failed to update user" }, 500);
   }
 });
+
+userRouter.get("/me", authMiddleware, async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  try {
+    const userId = c.req.user?.id;
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      return c.json({ error: "User not found" }, 404);
+    }
+    return c.json(user, 200);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return c.json({ error: "Failed to get user" }, 500);
+  }
+});

@@ -33,3 +33,15 @@ export const signinUserFun = async (data: SignInInput) => {
     return error;
   }
 };
+
+export const userDetailsFun = async (token: string) => {
+  try {
+    const response = await axios.get(`${USER_API}/me`, {
+      headers: { Authorization: `${token}` },
+    });
+    console.log(response.data.name);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
