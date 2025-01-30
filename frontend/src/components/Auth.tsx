@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LableInput from "./LabledInput";
 import { useState } from "react";
 import Btn from "./Btn";
@@ -18,8 +18,6 @@ function Auth({ type }: { type: "signup" | "signin" }) {
     bio: "",
   });
 
-  const navigate = useNavigate();
-
   const submitHandlerSignup = async () => {
     try {
       const res = (await signupUserFun(signUpInput)) as {
@@ -29,7 +27,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
 
       if (res.status === 200) {
         localStorage.setItem("token", res?.data.jwt);
-        navigate("/dashboard");
+        window.location.reload();
       } else {
         alert("Something went wrong in signup");
       }
@@ -47,7 +45,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
       };
       if (res.status === 200) {
         localStorage.setItem("token", res?.data.jwt);
-        navigate("/dashboard");
+        window.location.reload();
       } else {
         alert("Something went wrong in signup");
       }
