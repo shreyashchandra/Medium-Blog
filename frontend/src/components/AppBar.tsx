@@ -2,8 +2,10 @@ import logo from "../assets/logo.jpg"; // Ensure correct path
 import { Link } from "react-router-dom";
 import { userDetailsFun as fetchUserDetails } from "../utils/api.utils";
 import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 function AppBar() {
+  const { isAuthenticated } = useAuth();
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.reload();
@@ -33,24 +35,38 @@ function AppBar() {
       </Link>
 
       {/* Right-side menu */}
-      <div className="flex items-center gap-4 p-10">
-        <button className="bg-green-500 hover:bg-green-400 px-3 py-1 rounded-md text-sm text-white">
-          New +
-        </button>
-
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-white bg-black">
-            {user?.charAt(0)}
-          </div>
-
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-400 text-white px-3 py-1 rounded-md text-sm"
-          >
-            Logout
+      {isAuthenticated && (
+        <div className="flex items-center gap-4 p-10">
+          <button className="bg-green-500 hover:bg-green-400 px-3 py-1 rounded-md text-sm text-white">
+            New +
           </button>
+
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white bg-black">
+              {user?.charAt(0)}
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-400 text-white px-3 py-1 rounded-md text-sm"
+            >
+              Logout
+            </button>
+          </div>
         </div>
-      </div>
+      )}
+      {!isAuthenticated && (
+        <div className="flex items-center gap-4 p-10">
+          <div>
+            <Link
+              to="/signin"
+              className="bg-green-500 hover:bg-green-400 px-3 py-1 rounded-md text-sm text-white"
+            >
+              Login
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -48,9 +48,7 @@ export const userDetailsFun = async (token: string) => {
 
 export const allBlogsFun = async () => {
   try {
-    const reponse = await axios.get(`${BLOG_API}/all`, {
-      headers: { Authorization: `${localStorage.getItem("token")}` },
-    });
+    const reponse = await axios.get(`${BLOG_API}/all`);
     console.log(reponse.data);
     return reponse.data;
   } catch (error) {

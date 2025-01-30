@@ -6,6 +6,8 @@ import {
   updatePostInput,
 } from "@shreyashchandra/medium-blog-common";
 
+import { authMiddleware } from "../middlewares/authMiddleware.middleware";
+
 export const blogRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
@@ -13,7 +15,7 @@ export const blogRouter = new Hono<{
   };
 }>();
 
-blogRouter.post("/", async (c) => {
+blogRouter.post("/", authMiddleware, async (c) => {
   try {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -49,7 +51,7 @@ blogRouter.post("/", async (c) => {
   }
 });
 
-blogRouter.put("/", async (c) => {
+blogRouter.put("/", authMiddleware, async (c) => {
   try {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -91,7 +93,7 @@ blogRouter.put("/", async (c) => {
   }
 });
 
-blogRouter.get("/", async (c) => {
+blogRouter.get("/", authMiddleware, async (c) => {
   try {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -118,7 +120,7 @@ blogRouter.get("/", async (c) => {
 });
 
 // TODO: Add pagination
-blogRouter.get("/bulk", async (c) => {
+blogRouter.get("/bulk", authMiddleware, async (c) => {
   try {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,

@@ -12,12 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? <Dashboard /> : <Navigate to="/signin" replace />
-          }
-        />
+        <Route path="/" element={<Dashboard />} />
         <Route
           path="/signup"
           element={isAuthenticated ? <Navigate to="/" replace /> : <Signup />}
