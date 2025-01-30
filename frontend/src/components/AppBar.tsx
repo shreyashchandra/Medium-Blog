@@ -69,7 +69,7 @@ function AppBar() {
 
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-white bg-black">
-              {user?.charAt(0)}
+              <Link to="/user/update">{user?.charAt(0)}</Link>
             </div>
 
             <button
