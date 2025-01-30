@@ -18,8 +18,11 @@ function Auth({ type }: { type: "signup" | "signin" }) {
     bio: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const submitHandlerSignup = async () => {
     try {
+      setLoading(true);
       const res = (await signupUserFun(signUpInput)) as {
         status: number;
         data: { jwt: string };
@@ -27,6 +30,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
 
       if (res.status === 200) {
         localStorage.setItem("token", res?.data.jwt);
+        setLoading(false);
         window.location.reload();
       } else {
         alert("Something went wrong in signup");
@@ -39,12 +43,14 @@ function Auth({ type }: { type: "signup" | "signin" }) {
 
   const submitHandlerSignin: () => void = async () => {
     try {
+      setLoading(true);
       const res = (await signinUserFun(signInInput)) as {
         status: number;
         data: { jwt: string };
       };
       if (res.status === 200) {
         localStorage.setItem("token", res?.data.jwt);
+        setLoading(false);
         window.location.reload();
       } else {
         alert("Something went wrong in signup");
@@ -54,6 +60,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
       alert("Something went wrong in signin");
     }
   };
+
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center">
@@ -116,7 +123,11 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 value={signUpInput.bio || ""}
               />
               <div className="pt-4 flex flex-col items-center justify-center">
-                <Btn btnName={type} submitHandler={submitHandlerSignup} />
+                <Btn
+                  isLoading={loading}
+                  btnName={type}
+                  submitHandler={submitHandlerSignup}
+                />
               </div>
             </div>
           </>
@@ -143,7 +154,11 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 value={signInInput.password}
               />
               <div className="pt-4 flex flex-col items-center justify-center">
-                <Btn btnName={type} submitHandler={submitHandlerSignin} />
+                <Btn
+                  isLoading={loading}
+                  btnName={type}
+                  submitHandler={submitHandlerSignin}
+                />
               </div>
             </div>
           </>
