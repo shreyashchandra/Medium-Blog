@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { userRouter } from "./routes/user.routes";
 import { blogRouter } from "./routes/blog.routes";
 import { authMiddleware } from "./middlewares/authMiddleware.middleware";
+import { cors } from "hono/cors";
 
 type User = {
   id: string;
@@ -21,6 +22,8 @@ const app = new Hono<{
     JWT_SECRET: string;
   };
 }>();
+
+app.use("/*", cors());
 
 // Routes
 app.get("/", (c) => c.text("Hello Hono!"));

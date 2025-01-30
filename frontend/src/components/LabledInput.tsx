@@ -1,7 +1,9 @@
 interface LabledInputProps {
   label: string;
   placeholder: string;
-  onChange: (e: { target: { value: string } }) => void;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   value: string;
   inputType?: string;
 }
@@ -17,7 +19,7 @@ function LabledInput({
     <div>
       <div>
         <label
-          htmlFor="first_name"
+          htmlFor={label}
           className="block text-sm font-medium text-gray-900"
         >
           {label}
@@ -25,7 +27,7 @@ function LabledInput({
         <input
           onChange={onChange}
           type={inputType}
-          id="first_name"
+          id={label}
           className=" border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
           placeholder={placeholder}
           required

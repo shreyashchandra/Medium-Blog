@@ -1,22 +1,60 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LableInput from "./LabledInput";
 import { useState } from "react";
 import Btn from "./Btn";
 import TextArea from "./TextArea";
+import { SignInInput, SignUpInput } from "@shreyashchandra/medium-blog-common";
+import { signupUserFun, signinUserFun } from "../utils/api.utils";
 
 function Auth({ type }: { type: "signup" | "signin" }) {
-  const [nameIn, setNameIn] = useState("");
-  const [emailIn, setEmailIn] = useState("");
-  const [passwordIn, setPasswordIn] = useState("");
-  const [bio, setBio] = useState("");
-  const submitHandler: () => void = () => {
-    const data = {
-      name: nameIn,
-      email: emailIn,
-      password: passwordIn,
-      bio: bio,
-    };
-    console.log("data: -", data);
+  const [signInInput, setSignInInput] = useState<SignInInput>({
+    email: "",
+    password: "",
+  });
+  const [signUpInput, setSignUpInput] = useState<SignUpInput>({
+    name: "",
+    email: "",
+    password: "",
+    bio: "",
+  });
+
+  const navigate = useNavigate();
+
+  const submitHandlerSignup = async () => {
+    try {
+      const res = (await signupUserFun(signUpInput)) as {
+        status: number;
+        data: { jwt: string };
+      };
+
+      if (res.status === 200) {
+        localStorage.setItem("token", res?.data.jwt);
+        navigate("/dashboard");
+      } else {
+        alert("Something went wrong in signup");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong in signup");
+    }
+  };
+
+  const submitHandlerSignin: () => void = async () => {
+    try {
+      const res = (await signinUserFun(signInInput)) as {
+        status: number;
+        data: { jwt: string };
+      };
+      if (res.status === 200) {
+        localStorage.setItem("token", res?.data.jwt);
+        navigate("/dashboard");
+      } else {
+        alert("Something went wrong in signup");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong in signin");
+    }
   };
   return (
     <div className="flex h-screen flex-col items-center justify-center">
@@ -49,18 +87,18 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 label={"Full Name"}
                 placeholder={"Enter Your Name"}
                 onChange={(e: { target: { value: string } }) =>
-                  setNameIn(e.target.value)
+                  setSignUpInput({ ...signUpInput, name: e.target.value })
                 }
-                value={nameIn}
+                value={signUpInput.name || ""}
               />
 
               <LableInput
                 label={"Email"}
                 placeholder={"Enter Your Email"}
                 onChange={(e: { target: { value: string } }) =>
-                  setEmailIn(e.target.value)
+                  setSignUpInput({ ...signUpInput, email: e.target.value })
                 }
-                value={emailIn}
+                value={signUpInput.email}
               />
 
               <LableInput
@@ -68,19 +106,19 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 label={"Password"}
                 placeholder={"Enter Your Password"}
                 onChange={(e: { target: { value: string } }) =>
-                  setPasswordIn(e.target.value)
+                  setSignUpInput({ ...signUpInput, password: e.target.value })
                 }
-                value={passwordIn}
+                value={signUpInput.password}
               />
 
               <TextArea
                 onChange={(e: { target: { value: string } }) =>
-                  setBio(e.target.value)
+                  setSignUpInput({ ...signUpInput, bio: e.target.value })
                 }
-                value={bio}
+                value={signUpInput.bio || ""}
               />
               <div className="pt-4">
-                <Btn btnName={type} submitHandler={submitHandler} />
+                <Btn btnName={type} submitHandler={submitHandlerSignup} />
               </div>
             </div>
           </>
@@ -92,9 +130,9 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 label={"Email"}
                 placeholder={"Enter Your Email"}
                 onChange={(e: { target: { value: string } }) =>
-                  setEmailIn(e.target.value)
+                  setSignInInput({ ...signInInput, email: e.target.value })
                 }
-                value={emailIn}
+                value={signInInput.email}
               />
 
               <LableInput
@@ -102,12 +140,12 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 label={"Password"}
                 placeholder={"Enter Your Password"}
                 onChange={(e: { target: { value: string } }) =>
-                  setPasswordIn(e.target.value)
+                  setSignInInput({ ...signInInput, password: e.target.value })
                 }
-                value={passwordIn}
+                value={signInInput.password}
               />
               <div className="pt-4">
-                <Btn btnName={type} submitHandler={submitHandler} />
+                <Btn btnName={type} submitHandler={submitHandlerSignin} />
               </div>
             </div>
           </>

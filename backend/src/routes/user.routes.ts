@@ -30,12 +30,13 @@ userRouter.post("/signup", async (c) => {
       return c.json({ error: "Invalid input" }, 411);
     }
     const hashedPassword = await bcrypt.hash(body.password, 10); // Hash the password
+
     const createdUser = await prisma.user.create({
       data: {
-        email: body.email,
-        name: body.name,
+        email: body.email.trim(),
+        name: body.name.trim(),
         password: hashedPassword,
-        bio: body.bio,
+        bio: body.bio.trim(),
       },
     });
     const token = await sign(

@@ -1,5 +1,5 @@
 interface TextAreaProps {
-  onChange: (e: { target: { value: string } }) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   value: string;
 }
 
@@ -18,9 +18,8 @@ function TextArea({ onChange, value }: TextAreaProps) {
         rows={4}
         className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
         placeholder="Write your Bio here..."
-      >
-        {value}
-      </textarea>
+        value={value}
+      />
     </div>
   );
 }
