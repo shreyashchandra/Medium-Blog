@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AppBar from "../components/AppBar";
 import { allBlogsFun } from "../utils/api.utils";
 import BlogCard from "../components/BlogCard";
+import Skelton from "../components/Skelton";
 
 const Dashboard = () => {
   interface Blog {
@@ -19,12 +20,15 @@ const Dashboard = () => {
 
   // Correct state typing to hold an array of blogs
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchBlogs = async () => {
+    setLoading(true);
     const res = await allBlogsFun();
     if (res) {
       console.log(res);
       setBlogs(res); // Assuming res is an array of Blog objects
+      setLoading(false);
     }
   };
 
@@ -36,15 +40,19 @@ const Dashboard = () => {
     <>
       <div>
         <AppBar />
-        <div>
-          {blogs.map((item: Blog) => {
-            return (
-              <div key={item.id}>
-                <BlogCard blog={item} />
-              </div>
-            );
-          })}
-        </div>
+
+        {loading && <Skelton />}
+        {!loading && (
+          <div>
+            {blogs.map((item: Blog) => {
+              return (
+                <div key={item.id}>
+                  <BlogCard blog={item} />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );
