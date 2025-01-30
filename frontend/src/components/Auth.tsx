@@ -57,7 +57,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center">
-        <h1 className="text-5xl font-semibold text-gray-700">
+        <h1 className="text-3xl md:text-5xl font-semibold text-gray-700">
           {type === "signup" ? "Create an account" : "Login Into Your Account"}
         </h1>
         <p className="text-sm text-gray-600 mt-1">
@@ -80,7 +80,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
         </p>
         {type === "signup" && (
           <>
-            <div className="p-4 mt-7 flex flex-col gap-3 w-full">
+            <div className="p-4 mt-7 flex flex-col gap-3 w-[80%] md:w-full">
               <LableInput
                 label={"Full Name"}
                 placeholder={"Enter Your Name"}
@@ -115,7 +115,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 }
                 value={signUpInput.bio || ""}
               />
-              <div className="pt-4">
+              <div className="pt-4 flex flex-col items-center justify-center">
                 <Btn btnName={type} submitHandler={submitHandlerSignup} />
               </div>
             </div>
@@ -123,7 +123,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
         )}
         {type === "signin" && (
           <>
-            <div className="p-4 mt-7 flex flex-col gap-3 w-full">
+            <div className="p-4 mt-7 flex flex-col gap-3 w-[80%] md:w-full">
               <LableInput
                 label={"Email"}
                 placeholder={"Enter Your Email"}
@@ -142,7 +142,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
                 }
                 value={signInInput.password}
               />
-              <div className="pt-4">
+              <div className="pt-4 flex flex-col items-center justify-center">
                 <Btn btnName={type} submitHandler={submitHandlerSignin} />
               </div>
             </div>
