@@ -153,6 +153,19 @@ blogRouter.get("/all", async (c) => {
 
     const findBlog = await prisma.post.findMany({
       where: { published: true },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        published: true,
+        author: {
+          select: {
+            name: true,
+            bio: true,
+          },
+        },
+        createdAt: true,
+      },
     });
 
     if (!findBlog) {

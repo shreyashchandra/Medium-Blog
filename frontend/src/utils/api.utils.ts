@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USER_API } from "../configs/api.config";
+import { USER_API, BLOG_API } from "../configs/api.config";
 import { SignInInput, SignUpInput } from "@shreyashchandra/medium-blog-common";
 
 export const signupUserFun = async (data: SignUpInput) => {
@@ -41,6 +41,18 @@ export const userDetailsFun = async (token: string) => {
     });
     console.log(response.data.name);
     return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const allBlogsFun = async () => {
+  try {
+    const reponse = await axios.get(`${BLOG_API}/all`, {
+      headers: { Authorization: `${localStorage.getItem("token")}` },
+    });
+    console.log(reponse.data);
+    return reponse.data;
   } catch (error) {
     return error;
   }

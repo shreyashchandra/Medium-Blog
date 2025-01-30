@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 function AppBar() {
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token
-    window.location.reload(); // Reload the page
+    localStorage.removeItem("token");
+    window.location.reload();
   };
 
   const [user, setUser] = useState("");
