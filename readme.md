@@ -4,6 +4,7 @@
 
 <!-- TODO: -->
 
+- [ ] ADD bookmarks
 - [ ] ADD tags field in blog
 - [ ] ADD filter search in the blog (By name and by tag name)
 
