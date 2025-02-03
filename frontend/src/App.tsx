@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Signup, Signin, Blog, Dashboard, UserUpdate } from "./pages";
 import { useAuth } from "./hooks/useAuth";
+import AddBlog from "./pages/AddBlog";
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
@@ -31,6 +32,12 @@ function App() {
           path="/user/update"
           element={
             isAuthenticated ? <UserUpdate /> : <Navigate to="/signin" replace />
+          }
+        />
+        <Route
+          path="/add/blog"
+          element={
+            isAuthenticated ? <AddBlog /> : <Navigate to="/signin" replace />
           }
         />
       </Routes>

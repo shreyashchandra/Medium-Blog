@@ -20,6 +20,7 @@ export const userUpdateInput = z.object({
 export const createPostInput = z.object({
   title: z.string(),
   content: z.string(),
+  imageUrl: z.string().optional(),
 });
 
 export const updatePostInput = z.object({

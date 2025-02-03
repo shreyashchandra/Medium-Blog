@@ -46,7 +46,13 @@ const Dashboard = () => {
           <div>
             {blogs.map((item: Blog) => {
               return (
-                <div key={item.id}>
+                <div
+                  key={item.id}
+                  onClick={() => {
+                    console.log(item.id);
+                    window.location.href = `/blog/${item.id}`;
+                  }}
+                >
                   <BlogCard blog={item} />
                 </div>
               );

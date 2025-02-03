@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
-import logo from "../assets/logo.jpg"; // Ensure correct path
+
 import { userDetailsFun as fetchUserDetails } from "../utils/api.utils";
 import { useAuth } from "../hooks/useAuth";
 import SearchBar from "./SearchBar";
+import { NotebookPen, LogOut } from "lucide-react";
 
 function AppBar() {
   const [search, setSearch] = useState(false);
@@ -30,7 +31,7 @@ function AppBar() {
     if (token) {
       fetchUserDetailsLocal(token);
     }
-  }, [fetchUserDetailsLocal]); // Added fetchUserDetailsLocal to dependencies
+  }, [fetchUserDetailsLocal]);
 
   if (search) {
     return (
@@ -48,40 +49,43 @@ function AppBar() {
   }
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center  border-b p-5">
       {/* Logo */}
-      <Link to={"/"}>
-        <img
-          src={logo || "/placeholder.svg"}
-          alt="logo"
-          className="w-28 h-28"
-        />
+
+      <Link className="flex items-center text-3xl font-bold " to="/">
+        cognito
       </Link>
+
       <div className="hidden md:block md:w-96">
         <SearchBar />
       </div>
       {/* Right-side menu */}
       {isAuthenticated ? (
-        <div className="flex items-center gap-4 p-10">
-          <button className="bg-green-500 hover:bg-green-400 px-3 py-1 rounded-md text-sm text-white">
-            New +
+        <div className="flex items-center gap-4 ">
+          <button>
+            <Link to="/add/blog">
+              <NotebookPen />
+            </Link>
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-8">
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-white bg-black">
               <Link to="/user/update">{user?.charAt(0)}</Link>
             </div>
 
             <button
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-400 text-white px-3 py-1 rounded-md text-sm"
+              className="bg-red-500 flex items-center hover:bg-red-400 text-white px-5 py-1 rounded-md text-sm"
             >
               Logout
+              <span>
+                <LogOut />
+              </span>
             </button>
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-10 p-10">
+        <div className="flex items-center gap-10">
           <button onClick={() => setSearch(true)} className="md:hidden">
             <svg
               className="w-6 h-6 text-gray-500"

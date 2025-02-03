@@ -12,8 +12,8 @@ export const signupUserFun = async (data: SignUpInput) => {
       bio: bio?.trim(),
     };
     const response = await axios.post(`${USER_API}/signup`, newObj);
-
-    return response;
+    console.log("from uitls---", response);
+    return { response, status: response.data.status };
   } catch (error) {
     return error;
   }
@@ -52,6 +52,41 @@ export const allBlogsFun = async () => {
     console.log(reponse.data);
     return reponse.data;
   } catch (error) {
+    return error;
+  }
+};
+
+export const addBlogFun = async (
+  token: string,
+  data: { title: string; content: string }
+) => {
+  try {
+    const response = await axios.post(
+      `${BLOG_API}`,
+      { title: data.title, content: data.content },
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getBlogById = async (token: string, blogId: string) => {
+  try {
+    const url = `${BLOG_API}?id=${blogId}`;
+    console.log("Fetching Blog from:", url); // Debugging URL
+    const response = await axios.get(url, {
+      headers: { Authorization: token },
+    });
+
+    console.log("Fetched Blog Data:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching blog:", error);
     return error;
   }
 };

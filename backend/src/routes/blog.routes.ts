@@ -37,6 +37,7 @@ blogRouter.post("/", authMiddleware, async (c) => {
         author: {
           connect: { id: userId },
         },
+        image: body.imageUrl,
       },
     });
 

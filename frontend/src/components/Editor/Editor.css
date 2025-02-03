@@ -1,0 +1,14 @@
+.editor-container {
+  max-width: 1200px;
+  /* margin: auto; */
+  /* padding: 2px; */
+  /* border: 1px solid #ddd; */
+  /* border-radius: 5px; */
+  background: #fff;
+}
+
+.ql-editor {
+  min-height: 400px;
+}
+
+

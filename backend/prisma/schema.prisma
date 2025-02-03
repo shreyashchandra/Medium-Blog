@@ -27,8 +27,7 @@ model Post {
   createdAt DateTime   @default(now())
   image     String?
   Bookmark  Bookmark[]
-  Tags      Tags?      @relation(fields: [tagsId], references: [id])
-  tagsId    String?
+  tags      Tags[]     @relation("PostTags") // Many-to-Many relation
 }
 
 model Bookmark {
@@ -43,5 +42,5 @@ model Bookmark {
 model Tags {
   id    String @id @default(uuid())
   name  String
-  posts Post[]
+  posts Post[] @relation("PostTags") // Many-to-Many relation
 }
