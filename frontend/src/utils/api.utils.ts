@@ -13,7 +13,7 @@ export const signupUserFun = async (data: SignUpInput) => {
     };
     const response = await axios.post(`${USER_API}/signup`, newObj);
     console.log("from uitls---", response);
-    return { response, status: response.data.status };
+    return response;
   } catch (error) {
     return error;
   }

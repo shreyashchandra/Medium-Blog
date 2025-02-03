@@ -27,8 +27,9 @@ function Auth({ type }: { type: "signup" | "signin" }) {
         status: number;
         data: { jwt: string };
       };
-
-      if (res.status === 200) {
+      if (res.status == 200) {
+        console.log(res);
+        console.log("from signup");
         localStorage.setItem("token", res?.data.jwt);
         setLoading(false);
         window.location.reload();
@@ -53,7 +54,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
         setLoading(false);
         window.location.reload();
       } else {
-        alert("Something went wrong in signup");
+        alert("Something went wrong in signin");
       }
     } catch (error) {
       console.log(error);
